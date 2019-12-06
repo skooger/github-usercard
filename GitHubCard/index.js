@@ -1,8 +1,7 @@
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
-*/
-
+           https://api.github.com/users/<your name>*/
+           
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +23,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['skooger','tadepew','aalvinlin','SpencerElggren','kjmagill','vincentsanders','heyclos'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +52,63 @@ const followersArray = [];
   luishrd
   bigknell
 */
+function createCard(data){
+
+  //Create all the elements of a card
+  const container = document.createElement('div'),
+        img = document.createElement('img'),
+        info = document.createElement('div'),
+        name = document.createElement('h3'),
+        user = document.createElement('p'),
+        location = document.createElement('p'),
+        profile = document.createElement('p'),
+        url = document.createElement('a'),
+        followers = document.createElement('p'),
+        following = document.createElement('p'),
+        bio = document.createElement('p');
+
+  //Adding the class lists
+  container.classList.add('card')
+  info.classList.add('card-info')
+  name.classList.add('name')
+  user.classList.add('username')
+
+  //Append all the children to the container
+  container.appendChild(img)
+  container.appendChild(info)
+  info.appendChild(name)
+  info.appendChild(user)
+  info.appendChild(location)
+  info.appendChild(profile)
+  info.appendChild(url)
+  info.appendChild(followers)
+  info.appendChild(following)
+  info.appendChild(bio)
+
+  //get the data and add the object
+  let dataObj = data['data']
+  img.src = dataObj['avatar_url']
+  name.textContent = dataObj['name']
+  user.textContent = dataObj['login']
+  location.textContent = "Location: " + dataObj['location']
+  profile.textContent = "Profile: " 
+  url.href = dataObj['url']
+  url.textContent = dataObj['url']
+  followers.textContent = "Followers: " + dataObj['followers']
+  following.textContent = "Following: " + dataObj['following']
+  bio.textContent = dataObj['bio']
+
+
+  return container
+
+
+}
+
+followersArray.forEach(item => {
+
+  axios.get(`https://api.github.com/users/${item}`).then(function (response) {
+    // handle success
+    document.querySelector('.cards').appendChild(createCard(response))
+  });
+
+})
